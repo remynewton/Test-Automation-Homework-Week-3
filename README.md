@@ -8,33 +8,94 @@ Use polymorphism with the abstract class and interface from the hierarchy.
 Create final class, method, variable.
 Create a static block, method, variable.
 
-I made Crime.java into an interface and added a bunch of static variables to it. I also made classes for all the crimes listed.
+I renamed Crime.java as "ICrime.java", making it into an interface. I initially used final static variables for it, but decided to use enums instead on the suggestion of my mentor. I also made a class called Crime.java.
 
 ```
-public interface Crime {
-    public static final String THEFT = "Theft";
-    public static final String ASSAULT = "Assault";
-    public static final String BURGLARY = "Burglary";
-    public static final String FRAUD = "Fraud";
-    public static final String DRUG_POSSESSION = "Drug Possession";
-    public static final String MURDER = "Murder";
-    public static final String JAVA_INSTR = "Java Instruction";
-
-    public static final int LOW_SEVERITY = 1;
-    public static final int MEDIUM_SEVERITY = 2;
-    public static final int HIGH_SEVERITY = 3;
-
-    public static final String THEFT_DESC = "Taking someone's property without their consent.";
-    public static final String ASSAULT_DESC = "Physically attacking someone, causing them harm.";
-    public static final String BURGLARY_DESC = "Entering a building illegally to commit a crime.";
-    public static final String FRAUD_DESC = "Deceiving someone to obtain money or property.";
-    public static final String DRUG_POSSESSION_DESC = "Illegally possessing controlled substances.";
-    public static final String MURDER_DESC = "Intentionally killing another person.";
-    public static final String JAVA_INSTR_DESC = "The vile act of teaching the Java programming language";
+public interface ICrime {
+    String getDescription();
     
-    public String getDescription();
-    public void setSeverity(int severity);
-    public int getSeverity();
+    enum Severity {
+        LOW(1),
+        MEDIUM(2),
+        HIGH(3);
+        
+        private int value;
+        
+        Severity(int value) {
+            this.value = value;
+        }
+        
+        public int getValue() {
+            return value;
+        }
+    }
+    
+    void setSeverity(Severity severity);
+    Severity getSeverity();
+}
+```
+
+Crime.java
+```
+public class Crime implements ICrime {
+    private String description;
+    private Severity severity;
+    private Type type;
+
+    public Crime(Type type) {
+        setType(type);
+    }
+
+    enum Type {
+        THEFT("Taking someone's property without their consent.", Severity.LOW),
+        ASSAULT("Physically attacking someone, causing them harm.", Severity.LOW),
+        BURGLARY("Entering a building illegally to commit a crime.", Severity.MEDIUM),
+        FRAUD("Deceiving someone to obtain money or property.", Severity.MEDIUM),
+        DRUG_POSSESSION("Illegally possessing controlled substances.", Severity.MEDIUM),
+        MURDER("Intentionally killing another person.", Severity.HIGH),
+        JAVA_INSTR("The vile act of teaching the Java programming language", Severity.MEDIUM);
+
+        private final String description;
+        private final Severity severity;
+
+        Type(String description, Severity severity) {
+            this.description = description;
+            this.severity = severity;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public Severity getSeverity() {
+            return severity;
+        }
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+        this.description = type.getDescription();
+        this.severity = type.getSeverity();
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public Severity getSeverity() {
+        return severity;
+    }
+
+    @Override
+    public void setSeverity(Severity severity) {
+        this.severity = severity;
+    }
 }
 ```
 
@@ -156,7 +217,7 @@ class PoliceStation {
         List<String> trainings1 = Arrays.asList("Patrol");
         PoliceDog patroldog1 = new PoliceDog("Fido", "05/17/2019", true, "German Shepherd", trainings1);
         ArrayList<Crime> crimes1 = new ArrayList<>();
-        crimes1.add(new JavaInstruction());
+        crimes1.add(new Crime(Crime.Type.JAVA_INSTR));
         Criminal criminal1 = new Criminal("Andrei Trukhanovich", "07/17/1991", "456 Elm St", crimes1);
         Victim victim1 = new Victim("Remy Newton", "05/22/1997", "789 Oak Ave", "9876");
         Case case1 = new Case("repeated Java instruction", officer1, criminal1, victim1, false);
@@ -231,5 +292,59 @@ public class PoliceDog extends Beast implements SearchAndRescue, Detection, Patr
             System.out.println("This dog is not trained for cadaver detection.");
         }
     }
+}
+```
+
+At the the suggestion of my mentor, I refactored my code for Person.java so that the variable would actually be used and would automatically be calculated and stored when the date of birth is set.
+```
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+
+public abstract class Person {
+    private String name;
+    private LocalDate DOB;
+    private String address;
+    static private Period age;
+
+    public Person (String name, String DOB, String address) {
+        this.name = name;
+        setDOB(DOB);
+        this.address = address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age.getYears();
+    }
+
+    public LocalDate getDOB() {
+        return DOB;
+    }
+
+    public void setDOB(String inputDOB) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate date = LocalDate.parse(inputDOB, formatter);
+        this.DOB = date;
+        LocalDate currentDate = LocalDate.now();
+        age = Period.between(DOB, currentDate);
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public abstract String getProfile();
 }
 ```
