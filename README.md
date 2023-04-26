@@ -295,7 +295,7 @@ public class PoliceDog extends Beast implements SearchAndRescue, Detection, Patr
 }
 ```
 
-At the the suggestion of my mentor, I refactored my code for Person.java so that the variable would actually be used and would automatically be calculated and stored when the date of birth is set.
+At the the suggestion of my mentor, I refactored my code for Person.java so that the variable "age" would actually be used and would automatically be calculated and stored when the date of birth is set.
 ```
 import java.time.LocalDate;
 import java.time.Period;
