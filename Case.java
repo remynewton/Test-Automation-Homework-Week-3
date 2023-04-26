@@ -58,10 +58,10 @@ public class Case {
     public int getSeverity() {
         int severity = 0;
         for (Crime crime : suspect.getCrimes()) {
-            severity += crime.getSeverity();
+            severity += crime.getSeverity().ordinal();
         }
         return severity;
-    }
+    }    
 
     @Override
     public String toString() {

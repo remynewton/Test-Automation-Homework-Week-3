@@ -1,25 +1,60 @@
-public interface Crime {
-    public static final String THEFT = "Theft";
-    public static final String ASSAULT = "Assault";
-    public static final String BURGLARY = "Burglary";
-    public static final String FRAUD = "Fraud";
-    public static final String DRUG_POSSESSION = "Drug Possession";
-    public static final String MURDER = "Murder";
-    public static final String JAVA_INSTR = "Java Instruction";
+public class Crime implements ICrime {
+    private String description;
+    private Severity severity;
+    private Type type;
 
-    public static final int LOW_SEVERITY = 1;
-    public static final int MEDIUM_SEVERITY = 2;
-    public static final int HIGH_SEVERITY = 3;
+    public Crime(Type type) {
+        setType(type);
+    }
 
-    public static final String THEFT_DESC = "Taking someone's property without their consent.";
-    public static final String ASSAULT_DESC = "Physically attacking someone, causing them harm.";
-    public static final String BURGLARY_DESC = "Entering a building illegally to commit a crime.";
-    public static final String FRAUD_DESC = "Deceiving someone to obtain money or property.";
-    public static final String DRUG_POSSESSION_DESC = "Illegally possessing controlled substances.";
-    public static final String MURDER_DESC = "Intentionally killing another person.";
-    public static final String JAVA_INSTR_DESC = "The vile act of teaching the Java programming language";
-    
-    public String getDescription();
-    public void setSeverity(int severity);
-    public int getSeverity();
+    enum Type {
+        THEFT("Taking someone's property without their consent.", Severity.LOW),
+        ASSAULT("Physically attacking someone, causing them harm.", Severity.LOW),
+        BURGLARY("Entering a building illegally to commit a crime.", Severity.MEDIUM),
+        FRAUD("Deceiving someone to obtain money or property.", Severity.MEDIUM),
+        DRUG_POSSESSION("Illegally possessing controlled substances.", Severity.MEDIUM),
+        MURDER("Intentionally killing another person.", Severity.HIGH),
+        JAVA_INSTR("The vile act of teaching the Java programming language", Severity.MEDIUM);
+
+        private final String description;
+        private final Severity severity;
+
+        Type(String description, Severity severity) {
+            this.description = description;
+            this.severity = severity;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public Severity getSeverity() {
+            return severity;
+        }
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+        this.description = type.getDescription();
+        this.severity = type.getSeverity();
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public Severity getSeverity() {
+        return severity;
+    }
+
+    @Override
+    public void setSeverity(Severity severity) {
+        this.severity = severity;
+    }
 }

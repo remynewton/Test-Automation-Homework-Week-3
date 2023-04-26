@@ -16,7 +16,7 @@ public class Victim extends Person {
     public String getProfile() {
         StringJoiner joiner = new StringJoiner(", ");
         joiner.add(getName());
-        joiner.add("DOB: " + getDOB().toString());
+        joiner.add("Age: " + getAge());
         joiner.add("current address: " + getAddress());
         joiner.add("Incident report number: " + getIncidentReportNumber());
         return joiner.toString();

@@ -24,7 +24,7 @@ class PoliceStation {
         List<String> trainings1 = Arrays.asList("Patrol");
         PoliceDog patroldog1 = new PoliceDog("Fido", "05/17/2019", true, "German Shepherd", trainings1);
         ArrayList<Crime> crimes1 = new ArrayList<>();
-        crimes1.add(new JavaInstruction());
+        crimes1.add(new Crime(Crime.Type.JAVA_INSTR));
         Criminal criminal1 = new Criminal("Andrei Trukhanovich", "07/17/1991", "456 Elm St", crimes1);
         Victim victim1 = new Victim("Remy Newton", "05/22/1997", "789 Oak Ave", "9876");
         Case case1 = new Case("repeated Java instruction", officer1, criminal1, victim1, false);

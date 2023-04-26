@@ -2,16 +2,16 @@ import java.util.ArrayList;
 import java.util.StringJoiner;
 
 public class Criminal extends Person {
-    private ArrayList<Crime> crimes;
+    private ArrayList<ICrime> crimes;
     private int crimeCount;
 
-    public Criminal(String name, String DOB, String address, ArrayList<Crime> crimes) {
+    public Criminal(String name, String DOB, String address, ArrayList<ICrime> crimes) {
         super(name, DOB, address);
         this.crimes = crimes;
         this.crimeCount = crimes.size();
     }
 
-    public ArrayList<Crime> getCrimes() {
+    public ArrayList<ICrime> getCrimes() {
         return crimes;
     }
 
@@ -41,7 +41,7 @@ public class Criminal extends Person {
     @Override
     public String getProfile() {
         StringJoiner joiner = new StringJoiner(", ");
-        for (Crime crime : crimes) {
+        for (ICrime crime : crimes) {
             joiner.add(crime.getDescription() + " (Severity: " + crime.getSeverity() + ")");
         }
         return "The criminal " + getName() + " has committed " + crimeCount + " crime(s), including: " + joiner.toString() + ".";
