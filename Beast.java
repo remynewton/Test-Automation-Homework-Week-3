@@ -7,7 +7,7 @@ public class Beast {
     public String name;
     public LocalDate DOB;
     public String address;
-    protected int age;
+    static private Period age;
     protected boolean furry;
 
     public Beast(String name, String DOB, boolean furry) {
@@ -25,8 +25,6 @@ public class Beast {
     }
 
     public int getAge() {
-        LocalDate currentDate = LocalDate.now();
-        Period age = Period.between(DOB, currentDate);
         return age.getYears();
     }
 
@@ -38,5 +36,7 @@ public class Beast {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate date = LocalDate.parse(inputDOB, formatter);
         this.DOB = date;
+        LocalDate currentDate = LocalDate.now();
+        age = Period.between(DOB, currentDate);
     }
 }
